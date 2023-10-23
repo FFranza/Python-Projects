@@ -25,7 +25,7 @@ class Product:
 
     def adding_qis(self, quantity):
         if quantity > 0: # Checks if value is applicable for adding products, disallows negative or non real numbers.
-            self.qis += quantity
+            self.pqis += quantity
             print (f"Added {quantity} units to {self.pname} to the new stock. Current stock is: {self.pqis}")
         else:
             print ("Invalid amount, please recheck. Stock is not updated.")
@@ -52,3 +52,32 @@ class Customer:
 
     def get_customer_info(self): # Return with customer information
         return f"Customer's name is: {self.cname} with the ID of: {self.cid}. Join date: {self.cjd}"
+    
+class Order:
+    def __init__(self, order_info, purchased_orders):
+        self.oid = order_info
+        self.pod = purchased_orders
+        self.ttp = self.calculate_total_price()
+
+    def calculate_total_price(self):
+        total_price = 0
+        for product, quantity, in self.pod:
+            total_price += product.pprice * quantity
+        return total_price
+# Example usage:
+# Create products
+product1 = Product(1, "Laptop", 800, 10, 'electronics')
+product2 = Product(2, "Book", 20, 50, 'books')
+
+# Create a customer
+customer = Customer(1, "Alice", "2023-10-01")
+
+# Add products to customer's purchase history
+customer.add_to_purchase_history((product1, 2))
+customer.add_to_purchase_history((product2, 5))
+
+# Create an order
+order = Order(1, customer.history)
+
+# Get total price of the order
+print(f"Total price of the order: ${order.ttp}")
